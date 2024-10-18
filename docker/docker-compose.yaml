@@ -704,12 +704,12 @@ networks:
   # create a network between sandbox, api and ssrf_proxy, and can not access outside.
   ssrf_proxy_network:
     driver: bridge
-    internal: true
+#    internal: true
   milvus:
     driver: bridge
   opensearch-net:
     driver: bridge
-    internal: true
+#    internal: true
 
 volumes:
   oradata:
