@@ -7,13 +7,9 @@ WORKDIR /app/api
 ENV POETRY_VERSION=1.8.3
 
 # if you located in China, you can use aliyun mirror to speed up
-RUN pip install --no-cache-dir poetry==${POETRY_VERSION} -i https://mirrors.aliyun.com/pypi/simple/
-# RUN apt-get update
-# RUN apt-get install -y vim && apt-get install -y net-tools && apt-get install -y telnet && apt-get install -y less && apt-get install -y mysql-client
-# RUN ping pypi.org -c 3
-# RUN telnet pypi.org 443
+# RUN pip install --no-cache-dir poetry==${POETRY_VERSION} -i https://mirrors.aliyun.com/pypi/simple/
 
-# RUN pip install --no-cache-dir --timeout 30 poetry==${POETRY_VERSION}
+RUN pip install --no-cache-dir --timeout 30 poetry==${POETRY_VERSION}
 
 # Configure Poetry
 ENV POETRY_CACHE_DIR=/tmp/poetry_cache

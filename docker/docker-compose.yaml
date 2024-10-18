@@ -216,6 +216,7 @@ services:
     build:
       context: ../api
       dockerfile: Dockerfile
+      network: host
     #    image: langgenius/dify-api:0.9.1-fix1
     image: data/dify-api:0.9.1-fix1
     restart: always
@@ -231,7 +232,7 @@ services:
       # Mount the storage directory to the container, for storing user files.
       - ./volumes/app/storage:/app/api/storage
     networks:
-#      - ssrf_proxy_network
+      - ssrf_proxy_network
       - default
 
   # worker service
@@ -259,7 +260,7 @@ services:
     build:
       context: ../web
       dockerfile: Dockerfile
-#    image: langgenius/dify-web:0.9.1-fix1
+    #    image: langgenius/dify-web:0.9.1-fix1
     image: data/dify-web:0.9.1-fix1
     restart: always
     environment:
@@ -704,12 +705,16 @@ networks:
   # create a network between sandbox, api and ssrf_proxy, and can not access outside.
   ssrf_proxy_network:
     driver: bridge
-#    internal: true
+    internal: true
+    ipam:
+      config:
+        - subnet: "172.17.0.0/16",
+          gateway: "172.17.0.1"
   milvus:
     driver: bridge
   opensearch-net:
     driver: bridge
-#    internal: true
+    internal: true
 
 volumes:
   oradata:
