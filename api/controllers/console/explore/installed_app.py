@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from flask_login import current_user
 from flask_restful import Resource, inputs, marshal_with, reqparse
@@ -11,7 +11,7 @@ from controllers.console.wraps import account_initialization_required, cloud_edi
 from extensions.ext_database import db
 from fields.installed_app_fields import installed_app_list_fields
 from libs.login import login_required
-from models.model import App, InstalledApp, RecommendedApp
+from models import App, InstalledApp, RecommendedApp
 from services.account_service import TenantService
 
 
@@ -81,7 +81,7 @@ class InstalledAppsListApi(Resource):
                 tenant_id=current_tenant_id,
                 app_owner_tenant_id=app.tenant_id,
                 is_pinned=False,
-                last_used_at=datetime.now(timezone.utc).replace(tzinfo=None),
+                last_used_at=datetime.now(UTC).replace(tzinfo=None),
             )
             db.session.add(new_installed_app)
             db.session.commit()
