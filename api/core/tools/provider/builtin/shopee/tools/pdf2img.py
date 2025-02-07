@@ -1,5 +1,6 @@
 import io
 import logging
+import math
 import time
 
 import fitz
@@ -45,25 +46,28 @@ class Pdf2ImgTool(BuiltinTool):
 
         return self.create_blob_message(blob=res, meta={"mime_type": "image/jpeg"})
 
-    def handle(self, pdf_bytes, width, length, dpi):
+    def handle(self, pdf_bytes, width, length, dpi=350):
         pdf_stream = io.BytesIO(pdf_bytes)
         doc = fitz.open(stream=pdf_stream, filetype="pdf")
         if 'encryption' in doc.metadata and doc.metadata['encryption'] is not None:
             if not doc.authenticate(""):
                 return
-
+        if dpi is None or dpi == 0:
+            dpi = 350
+        zoom = int(math.ceil(dpi / 72))
+        matrix = fitz.Matrix(zoom, zoom)
         images = []
         for pageNo in range(doc.page_count):
             page = doc.load_page(pageNo)
-            pix = page.get_pixmap()
+            pix = page.get_pixmap(matrix=matrix)
             images.append(Image.frombytes("RGB", (pix.width, pix.height), pix.samples))
 
-        res = self.concat_images(images, width, length, dpi)
+        res = self.concat_images(images, width, length)
         doc.close()
         pdf_stream.close()
         return res
 
-    def concat_images(self, images, target_width, target_length, dpi):
+    def concat_images(self, images, target_width, target_length):
         width = 0
         height = 0
         for image in images:
@@ -78,14 +82,11 @@ class Pdf2ImgTool(BuiltinTool):
             tmp, _ = image.size
             last_image_width += tmp
         # return result
-        if target_width > 0 and target_length > 0:
+        if target_width is not None and target_width > 0 and target_length is not None and target_length > 0:
             result = result.resize((target_width, target_length))
 
         image_stream = io.BytesIO()
-        if dpi > 0:
-            result.save(image_stream, format='JPEG', dpi=(dpi, dpi))
-        else:
-            result.save(image_stream, format='JPEG')
+        result.save(image_stream, format='JPEG')
         image_binary_data = image_stream.getvalue()
         image_stream.close()
         return image_binary_data
