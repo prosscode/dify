@@ -44,7 +44,7 @@ ENV APP_WEB_URL=http://127.0.0.1:3000
 EXPOSE 5001
 
 # set timezone
-# ENV TZ=UTC
+ENV TZ=UTC
 ENV TZ=Asia/Singapore
 
 WORKDIR /app/api
@@ -56,7 +56,7 @@ RUN apt-get update \
     && echo "deb http://deb.debian.org/debian testing main" > /etc/apt/sources.list \
     && apt-get update \
     # For Security
-    && apt-get install -y --no-install-recommends expat=2.6.4-1 libldap-2.5-0 perl libsqlite3-0=3.46.1-1 zlib1g=1:1.3.dfsg+really1.3.1-1+b1 \
+    && apt-get install -y --no-install-recommends expat=2.6.4-1 libldap-2.5-0 perl libsqlite3-0 zlib1g=1:1.3.dfsg+really1.3.1-1+b1 \
     # install a chinese font to support the use of tools like matplotlib
     && apt-get install -y fonts-noto-cjk \
     && apt-get autoremove -y \
