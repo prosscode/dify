@@ -44,7 +44,7 @@ ENV APP_WEB_URL=http://127.0.0.1:3000
 EXPOSE 5001
 
 # set timezone
-ENV TZ=UTC
+# ENV TZ=UTC
 ENV TZ=Asia/Singapore
 
 WORKDIR /app/api
