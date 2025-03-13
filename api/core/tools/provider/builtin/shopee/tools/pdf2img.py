@@ -84,10 +84,10 @@ class Pdf2ImgTool(BuiltinTool):
             doc.close()
             return self.create_text_message("Pdf2Img error")
 
-        pdf_stream.close()
-        doc.close()
         results = [self.create_blob_message(blob=res, meta={"mime_type": "image/jpeg"}),
                    self.create_text_message(str(doc.page_count))]
+        pdf_stream.close()
+        doc.close()
         return results
 
     def handle(self, doc, vector_max_size, bit_max_size, quality, direction, pages, dpi=350):
