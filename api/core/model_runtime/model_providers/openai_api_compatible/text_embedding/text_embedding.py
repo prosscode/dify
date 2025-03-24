@@ -29,12 +29,12 @@ class OAICompatEmbeddingModel(_CommonOaiApiCompat, TextEmbeddingModel):
     """
 
     def _invoke(
-        self,
-        model: str,
-        credentials: dict,
-        texts: list[str],
-        user: Optional[str] = None,
-        input_type: EmbeddingInputType = EmbeddingInputType.DOCUMENT,
+            self,
+            model: str,
+            credentials: dict,
+            texts: list[str],
+            user: Optional[str] = None,
+            input_type: EmbeddingInputType = EmbeddingInputType.DOCUMENT,
     ) -> TextEmbeddingResult:
         """
         Invoke text embedding model
@@ -99,7 +99,7 @@ class OAICompatEmbeddingModel(_CommonOaiApiCompat, TextEmbeddingModel):
 
         for i in _iter:
             # Prepare the payload for the request
-            payload = {"input": inputs[i : i + max_chunks], "model": model, **extra_model_kwargs}
+            payload = {"input": inputs[i: i + max_chunks], "model": model, **extra_model_kwargs}
 
             # Make the request to the OpenAI API
             response = requests.post(endpoint_url, headers=headers, data=json.dumps(payload), timeout=(10, 300))
@@ -111,7 +111,7 @@ class OAICompatEmbeddingModel(_CommonOaiApiCompat, TextEmbeddingModel):
             embeddings_batch = [data["embedding"] for data in response_data["data"]]
             embedding_used_tokens = response_data["usage"]["total_tokens"]
 
-            used_tokens += embedding_used_tokens
+            used_tokens += embedding_used_tokens or 0
             batched_embeddings += embeddings_batch
 
         # calc usage
