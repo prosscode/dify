@@ -62,7 +62,7 @@ class OAICompatEmbeddingModel(_CommonOaiApiCompat, TextEmbeddingModel):
             endpoint_url += "/"
 
         # endpoint_url = urljoin(endpoint_url, "embeddings")
-        if 'shopee' in credentials['endpoint_url']:
+        if 'gateway.mpi.test.shopee.io' in credentials['endpoint_url']:
             endpoint_url = urljoin(endpoint_url, 'embedding')
         else:
             endpoint_url = urljoin(endpoint_url, 'embeddings')
@@ -154,7 +154,7 @@ class OAICompatEmbeddingModel(_CommonOaiApiCompat, TextEmbeddingModel):
                 endpoint_url += "/"
 
             # endpoint_url = urljoin(endpoint_url, "embeddings")
-            if 'shopee' in credentials['endpoint_url']:
+            if 'gateway.mpi.test.shopee.io' in credentials['endpoint_url']:
                 endpoint_url = urljoin(endpoint_url, 'embedding')
             else:
                 endpoint_url = urljoin(endpoint_url, 'embeddings')
