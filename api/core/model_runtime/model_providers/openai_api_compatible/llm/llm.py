@@ -47,15 +47,15 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
     """
 
     def _invoke(
-        self,
-        model: str,
-        credentials: dict,
-        prompt_messages: list[PromptMessage],
-        model_parameters: dict,
-        tools: Optional[list[PromptMessageTool]] = None,
-        stop: Optional[list[str]] = None,
-        stream: bool = True,
-        user: Optional[str] = None,
+            self,
+            model: str,
+            credentials: dict,
+            prompt_messages: list[PromptMessage],
+            model_parameters: dict,
+            tools: Optional[list[PromptMessageTool]] = None,
+            stop: Optional[list[str]] = None,
+            stream: bool = True,
+            user: Optional[str] = None,
     ) -> Union[LLMResult, Generator]:
         """
         Invoke large language model
@@ -84,11 +84,11 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
         )
 
     def get_num_tokens(
-        self,
-        model: str,
-        credentials: dict,
-        prompt_messages: list[PromptMessage],
-        tools: Optional[list[PromptMessageTool]] = None,
+            self,
+            model: str,
+            credentials: dict,
+            prompt_messages: list[PromptMessage],
+            tools: Optional[list[PromptMessageTool]] = None,
     ) -> int:
         """
         Get number of tokens for given prompt messages
@@ -119,6 +119,9 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
 
                 if "gateway.mpi.test.shopee.io" in credentials["endpoint_url"]:
                     headers["Authorization"] = f"Basic {api_key}"
+
+                if "compass.llm.shopee.io" in credentials["endpoint_url"] and model == 'gpt-4o':
+                    headers["Provider"] = "OpenAI"
 
             endpoint_url = credentials["endpoint_url"]
             if not endpoint_url.endswith("/"):
@@ -159,13 +162,13 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
                 json_result["object"] = "text_completion"
 
             if completion_type is LLMMode.CHAT and (
-                "object" not in json_result or json_result["object"] != "chat.completion"
+                    "object" not in json_result or json_result["object"] != "chat.completion"
             ):
                 raise CredentialsValidateFailedError(
                     "Credentials validation failed: invalid response object, must be 'chat.completion'"
                 )
             elif completion_type is LLMMode.COMPLETION and (
-                "object" not in json_result or json_result["object"] != "text_completion"
+                    "object" not in json_result or json_result["object"] != "text_completion"
             ):
                 raise CredentialsValidateFailedError(
                     "Credentials validation failed: invalid response object, must be 'text_completion'"
@@ -211,8 +214,8 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
                     label=I18nObject(en_US="Temperature", zh_Hans="温度"),
                     help=I18nObject(
                         en_US="Kernel sampling threshold. Used to determine the randomness of the results."
-                        "The higher the value, the stronger the randomness."
-                        "The higher the possibility of getting different answers to the same question.",
+                              "The higher the value, the stronger the randomness."
+                              "The higher the possibility of getting different answers to the same question.",
                         zh_Hans="核采样阈值。用于决定结果随机性，取值越高随机性越强即相同的问题得到的不同答案的可能性越高。",
                     ),
                     type=ParameterType.FLOAT,
@@ -226,8 +229,8 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
                     label=I18nObject(en_US="Top P", zh_Hans="Top P"),
                     help=I18nObject(
                         en_US="The probability threshold of the nucleus sampling method during the generation process."
-                        "The larger the value is, the higher the randomness of generation will be."
-                        "The smaller the value is, the higher the certainty of generation will be.",
+                              "The larger the value is, the higher the randomness of generation will be."
+                              "The smaller the value is, the higher the certainty of generation will be.",
                         zh_Hans="生成过程中核采样方法概率阈值。取值越大，生成的随机性越高；取值越小，生成的确定性越高。",
                     ),
                     type=ParameterType.FLOAT,
@@ -241,7 +244,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
                     label=I18nObject(en_US="Frequency Penalty", zh_Hans="频率惩罚"),
                     help=I18nObject(
                         en_US="For controlling the repetition rate of words used by the model."
-                        "Increasing this can reduce the repetition of the same words in the model's output.",
+                              "Increasing this can reduce the repetition of the same words in the model's output.",
                         zh_Hans="用于控制模型已使用字词的重复率。 提高此项可以降低模型在输出中重复相同字词的重复度。",
                     ),
                     type=ParameterType.FLOAT,
@@ -254,7 +257,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
                     label=I18nObject(en_US="Presence Penalty", zh_Hans="存在惩罚"),
                     help=I18nObject(
                         en_US="Used to control the repetition rate when generating models."
-                        "Increasing this can reduce the repetition rate of model generation.",
+                              "Increasing this can reduce the repetition rate of model generation.",
                         zh_Hans="用于控制模型生成时的重复度。提高此项可以降低模型生成的重复度。",
                     ),
                     type=ParameterType.FLOAT,
@@ -294,15 +297,15 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
     # validate_credentials method has been rewritten to use the requests library for compatibility with all providers
     # following OpenAI's API standard.
     def _generate(
-        self,
-        model: str,
-        credentials: dict,
-        prompt_messages: list[PromptMessage],
-        model_parameters: dict,
-        tools: Optional[list[PromptMessageTool]] = None,
-        stop: Optional[list[str]] = None,
-        stream: bool = True,
-        user: Optional[str] = None,
+            self,
+            model: str,
+            credentials: dict,
+            prompt_messages: list[PromptMessage],
+            model_parameters: dict,
+            tools: Optional[list[PromptMessageTool]] = None,
+            stop: Optional[list[str]] = None,
+            stream: bool = True,
+            user: Optional[str] = None,
     ) -> Union[LLMResult, Generator]:
         """
         Invoke llm completion model
@@ -333,6 +336,9 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
 
             if "gateway.mpi.test.shopee.io" in credentials["endpoint_url"]:
                 headers["Authorization"] = f"Basic {api_key}"
+
+            if "compass.llm.shopee.io" in credentials["endpoint_url"] and model == 'gpt-4o':
+                headers["Provider"] = "OpenAI"
 
         endpoint_url = credentials["endpoint_url"]
         if not endpoint_url.endswith("/"):
@@ -388,7 +394,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
         return self._handle_generate_response(model, credentials, response, prompt_messages)
 
     def _handle_generate_stream_response(
-        self, model: str, credentials: dict, response: requests.Response, prompt_messages: list[PromptMessage]
+            self, model: str, credentials: dict, response: requests.Response, prompt_messages: list[PromptMessage]
     ) -> Generator:
         """
         Handle llm stream response
@@ -403,7 +409,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
         chunk_index = 0
 
         def create_final_llm_result_chunk(
-            id: Optional[str], index: int, message: AssistantPromptMessage, finish_reason: str, usage: dict
+                id: Optional[str], index: int, message: AssistantPromptMessage, finish_reason: str, usage: dict
         ) -> LLMResultChunk:
             # calculate num tokens
             prompt_tokens = usage and usage.get("prompt_tokens")
@@ -504,8 +510,8 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
                     if "tool_calls" in delta and credentials.get("function_calling_type", "no_call") == "tool_call":
                         assistant_message_tool_calls = delta.get("tool_calls", None)
                     elif (
-                        "function_call" in delta
-                        and credentials.get("function_calling_type", "no_call") == "function_call"
+                            "function_call" in delta
+                            and credentials.get("function_calling_type", "no_call") == "function_call"
                     ):
                         assistant_message_tool_calls = [
                             {"id": "tool_call_id", "type": "function", "function": delta.get("function_call", {})}
@@ -572,7 +578,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
         )
 
     def _handle_generate_response(
-        self, model: str, credentials: dict, response: requests.Response, prompt_messages: list[PromptMessage]
+            self, model: str, credentials: dict, response: requests.Response, prompt_messages: list[PromptMessage]
     ) -> LLMResult:
         response_json: dict = response.json()
 
@@ -682,7 +688,8 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
         return message_dict
 
     def _num_tokens_from_string(
-        self, model: str, text: Union[str, list[PromptMessageContent]], tools: Optional[list[PromptMessageTool]] = None
+            self, model: str, text: Union[str, list[PromptMessageContent]],
+            tools: Optional[list[PromptMessageTool]] = None
     ) -> int:
         """
         Approximate num tokens for model with gpt2 tokenizer.
@@ -709,11 +716,11 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
         return num_tokens
 
     def _num_tokens_from_messages(
-        self,
-        model: str,
-        messages: list[PromptMessage],
-        tools: Optional[list[PromptMessageTool]] = None,
-        credentials: Optional[dict] = None,
+            self,
+            model: str,
+            messages: list[PromptMessage],
+            tools: Optional[list[PromptMessageTool]] = None,
+            credentials: Optional[dict] = None,
     ) -> int:
         """
         Approximate num tokens with GPT2 tokenizer.
