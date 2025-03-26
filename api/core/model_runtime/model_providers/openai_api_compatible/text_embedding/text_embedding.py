@@ -152,6 +152,9 @@ class OAICompatEmbeddingModel(_CommonOaiApiCompat, TextEmbeddingModel):
                 if 'gateway.mpi.test.shopee.io' in credentials['endpoint_url']:
                     headers["Authorization"] = f"Basic {api_key}"
 
+                if "compass.llm.shopee.io" in credentials["endpoint_url"] and 'text-embedding' in model:
+                    headers["Provider"] = "OpenAI"
+
             endpoint_url = credentials.get("endpoint_url")
             if not endpoint_url.endswith("/"):
                 endpoint_url += "/"
