@@ -120,7 +120,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
                 if "gateway.mpi.test.shopee.io" in credentials["endpoint_url"]:
                     headers["Authorization"] = f"Basic {api_key}"
 
-                if "compass.llm.shopee.io" in credentials["endpoint_url"] and model == 'gpt-4o':
+                if "compass.llm.shopee.io" in credentials["endpoint_url"] and 'gpt' in model:
                     headers["Provider"] = "OpenAI"
 
             endpoint_url = credentials["endpoint_url"]
@@ -337,7 +337,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
             if "gateway.mpi.test.shopee.io" in credentials["endpoint_url"]:
                 headers["Authorization"] = f"Basic {api_key}"
 
-            if "compass.llm.shopee.io" in credentials["endpoint_url"] and model == 'gpt-4o':
+            if "compass.llm.shopee.io" in credentials["endpoint_url"] and 'gpt' in model:
                 headers["Provider"] = "OpenAI"
 
         endpoint_url = credentials["endpoint_url"]
