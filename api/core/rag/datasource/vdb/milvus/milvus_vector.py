@@ -201,6 +201,7 @@ class MilvusVector(BaseVector):
 
     def _init_client(self, config) -> MilvusClient:
         client = MilvusClient(uri=config.uri, user=config.user, password=config.password, db_name=config.database)
+        logger.info("init milvus client")
         return client
 
 
