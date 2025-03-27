@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 from typing import Any, Optional
 
 import requests
@@ -16,6 +17,7 @@ from core.rag.models.document import Document
 from extensions.ext_redis import redis_client
 from models.dataset import Dataset
 
+logger = logging.getLogger(__name__)
 
 class WeaviateConfig(BaseModel):
     endpoint: str
@@ -38,7 +40,7 @@ class WeaviateVector(BaseVector):
 
     def _init_client(self, config: WeaviateConfig) -> weaviate.Client:
         auth_config = weaviate.auth.AuthApiKey(api_key=config.api_key)
-
+        logger.info("init weaviate client")
         weaviate.connect.connection.has_grpc = False
 
         try:

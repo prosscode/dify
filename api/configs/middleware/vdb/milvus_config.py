@@ -31,5 +31,5 @@ class MilvusConfig(BaseSettings):
 
     MILVUS_DATABASE: str = Field(
         description="Name of the Milvus database to connect to (default is 'default')",
-        default="default",
+        default="szfin_genos",
     )
