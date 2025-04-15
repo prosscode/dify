@@ -1,7 +1,7 @@
 import json
 import logging
 
-from celery import shared_task
+from celery import shared_task  # type: ignore
 from flask import current_app
 
 from core.ops.entities.config_entity import OPS_FILE_PATH, OPS_TRACE_FAILED_KEY
@@ -17,8 +17,6 @@ from models.workflow import WorkflowRun
 def process_trace_tasks(file_info):
     """
     Async process trace tasks
-    :param tasks_data: List of dictionaries containing task data
-
     Usage: process_trace_tasks.delay(tasks_data)
     """
     from core.ops.ops_trace_manager import OpsTraceManager

@@ -3,8 +3,7 @@ import logging
 import time
 
 import click
-from celery import shared_task
-from werkzeug.exceptions import NotFound
+from celery import shared_task  # type: ignore
 
 from core.indexing_runner import DocumentIsPausedError, IndexingRunner
 from core.rag.extractor.notion_extractor import NotionExtractor
@@ -29,7 +28,9 @@ def document_indexing_sync_task(dataset_id: str, document_id: str):
     document = db.session.query(Document).filter(Document.id == document_id, Document.dataset_id == dataset_id).first()
 
     if not document:
-        raise NotFound("Document not found")
+        logging.info(click.style("Document not found: {}".format(document_id), fg="red"))
+        db.session.close()
+        return
 
     data_source_info = document.data_source_info_dict
     if document.data_source_type == "notion_import":
@@ -82,7 +83,7 @@ def document_indexing_sync_task(dataset_id: str, document_id: str):
                 index_node_ids = [segment.index_node_id for segment in segments]
 
                 # delete from vector index
-                index_processor.clean(dataset, index_node_ids)
+                index_processor.clean(dataset, index_node_ids, with_keywords=True, delete_child_chunks=True)
 
                 for segment in segments:
                     db.session.delete(segment)
