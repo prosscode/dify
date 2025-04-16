@@ -48,7 +48,7 @@ class Pdf2ImgTool(BuiltinTool):
             invoke tools
         """
         logger.info("run shopee pdf2img")
-        file_variable = tool_parameters.get("file")
+        files_variable = tool_parameters.get("files")
         vector_max_size = tool_parameters.get("vector_max_size")
         bit_max_size = tool_parameters.get("bit_max_size")
         quality = tool_parameters.get("quality")
@@ -56,38 +56,40 @@ class Pdf2ImgTool(BuiltinTool):
         direction = tool_parameters.get("direction")
         pages = tool_parameters.get("pages")
 
-        logger.info(f'{file_variable}')
-        # 不是pdf直接返回
-        if file_variable.type != FileType.DOCUMENT:
-            return self.create_file_message(file_variable)
+        results = []
+        for file_variable in files_variable:
+            logger.info(f'{file_variable}')
+            # 不是pdf直接返回
+            if file_variable.type != FileType.DOCUMENT:
+                return self.create_file_message(file_variable)
 
-        image_binary = download(file_variable)
+            image_binary = download(file_variable)
 
-        if not image_binary:
-            return self.create_text_message("Image not found, please request user to generate image firstly.")
+            if not image_binary:
+                return self.create_text_message("Image not found, please request user to generate image firstly.")
 
-        pdf_stream = io.BytesIO(image_binary)
-        doc = fitz.open(stream=pdf_stream, filetype="pdf")
-        if doc is None:
-            pdf_stream.close()
-            return self.create_text_message("open pdf failed")
-        if doc.is_encrypted:
-            if not doc.authenticate(""):
+            pdf_stream = io.BytesIO(image_binary)
+            doc = fitz.open(stream=pdf_stream, filetype="pdf")
+            if doc is None:
+                pdf_stream.close()
+                return self.create_text_message("open pdf failed")
+            if doc.is_encrypted:
+                if not doc.authenticate(""):
+                    pdf_stream.close()
+                    doc.close()
+
+                    return self.create_text_message("auth encrypted pdf with empty string failed")
+
+            res = self.handle(doc, vector_max_size, bit_max_size, quality, direction, pages, dpi)
+            if not res:
                 pdf_stream.close()
                 doc.close()
+                return self.create_text_message("Pdf2Img error")
 
-                return self.create_text_message("auth encrypted pdf with empty string failed")
-
-        res = self.handle(doc, vector_max_size, bit_max_size, quality, direction, pages, dpi)
-        if not res:
+            results.append(self.create_blob_message(blob=res, meta={"mime_type": "image/jpeg"}))
+            results.append(self.create_text_message(str(doc.page_count)))
             pdf_stream.close()
             doc.close()
-            return self.create_text_message("Pdf2Img error")
-
-        results = [self.create_blob_message(blob=res, meta={"mime_type": "image/jpeg"}),
-                   self.create_text_message(str(doc.page_count))]
-        pdf_stream.close()
-        doc.close()
         return results
 
     def handle(self, doc, vector_max_size, bit_max_size, quality, direction, pages, dpi=350):
