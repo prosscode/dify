@@ -107,6 +107,9 @@ class Pdf2ImgTool(BuiltinTool):
                 target_pages.append(doc.load_page(pageNo))
 
         for page in target_pages:
+            rect = page.rect
+            if rect.height * rect.width > 100000000:
+                return
             pix = page.get_pixmap(matrix=matrix)
             image = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
             original_width, original_length = image.size
