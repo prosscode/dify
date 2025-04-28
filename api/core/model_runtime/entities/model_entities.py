@@ -106,6 +106,9 @@ class DefaultParameterName(StrEnum):
     RESPONSE_FORMAT = "response_format"
     JSON_SCHEMA = "json_schema"
 
+    SEED = "seed"
+    REPETITION_PENALTY = "repetition_penalty"
+
     @classmethod
     def value_of(cls, value: Any) -> "DefaultParameterName":
         """
