@@ -188,6 +188,10 @@ class QwenAPILargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
         if stream_function_calling == "supported":
             features.append(ModelFeature.STREAM_TOOL_CALL)
 
+        vision_support = credentials.get("vision_support", "not_support")
+        if vision_support == "support":
+            features.append(ModelFeature.VISION)
+
         entity = AIModelEntity(
             model=model,
             label=I18nObject(en_US=model),
