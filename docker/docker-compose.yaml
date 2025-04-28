@@ -562,7 +562,7 @@ services:
     working_dir: /opt/couchbase
     stdin_open: true
     tty: true
-    entrypoint: [""]
+    entrypoint: [ "" ]
     command: sh -c "/opt/couchbase/init/init-cbserver.sh"
     volumes:
       - ./volumes/couchbase/data:/opt/couchbase/var/lib/couchbase/data
@@ -861,6 +861,8 @@ networks:
       com.docker.network.driver.mtu: "1430"
   milvus:
     driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: "1430"
   opensearch-net:
     driver: bridge
     internal: true
