@@ -24,7 +24,9 @@ class Pdf2ImgTool(BuiltinTool):
         logger.info("run shopee pdfutils")
         files_variable = tool_parameters.get("files")
         configs = tool_parameters.get("configs")
-        config_map = json.loads(configs)
+        config_map = {}
+        if configs is not None and configs != "":
+            config_map = json.loads(configs)
 
         results = []
         for file_variable in files_variable:
