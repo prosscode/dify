@@ -55,7 +55,7 @@ RUN apt-get update \
     # && echo "deb http://mirrors.aliyun.com/debian testing main" > /etc/apt/sources.list \
     && echo "deb http://deb.debian.org/debian testing main" > /etc/apt/sources.list \
     && apt-get update \
-    && apt-get install poppler-utils \
+    && apt-get install -y poppler-utils \
     # For Security
     && apt-get install -y  --no-install-recommends expat libldap-2.5-0 perl libsqlite3-0 zlib1g=1:1.3.dfsg+really1.3.1-1+b1 \
     # install a chinese font to support the use of tools like matplotlib
