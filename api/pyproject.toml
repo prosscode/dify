@@ -6,7 +6,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
-exclude=[
+exclude = [
     "migrations/*",
 ]
 line-length = 120
@@ -92,7 +92,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.pyflakes]
-extend-generics=[
+extend-generics = [
     "_pytest.monkeypatch",
     "tests.integration_tests",
 ]
@@ -182,7 +182,7 @@ tokenizers = "~0.15.0"
 transformers = "~4.35.0"
 unstructured = { version = "~0.16.1", extras = ["docx", "epub", "md", "msg", "ppt", "pptx"] }
 validators = "0.21.0"
-volcengine-python-sdk = {extras = ["ark"], version = "~1.0.98"}
+volcengine-python-sdk = { extras = ["ark"], version = "~1.0.98" }
 websocket-client = "~1.7.0"
 werkzeug = "~3.0.1"
 xinference-client = "0.15.2"
@@ -197,6 +197,8 @@ zhipuai = "~2.1.5"
 # required by main implementations
 ############################################################
 pymupdf = "^1.24.14"
+pdf2image = "1.17.0"
+
 [tool.poetry.group.indirect.dependencies]
 kaleido = "0.2.1"
 rank-bm25 = "~0.2.2"
