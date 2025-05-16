@@ -500,7 +500,7 @@ class QwenAPILargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
                         usage = u
                 if not chunk_json:
                     try:
-                        if len(chunk_json["choices"]) == 0 or chunk_json["choices"][0]:
+                        if len(chunk_json["choices"]) == 0 and chunk_json["choices"][0]:
                             continue
                     except Exception as ex:
                         logger.info("chunk_json content: %s, exception %s", chunk_json, {str(ex)})
