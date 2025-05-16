@@ -505,8 +505,7 @@ class QwenAPILargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
                         continue
                 else:
                     try:
-                        if chunk_json["choices"][0]:
-                            continue
+                        choice_temp = chunk_json["choices"][0]
                     except Exception as ex:
                         logger.info("chunk_json content: %s, exception %s", chunk_json, {str(ex)})
 
