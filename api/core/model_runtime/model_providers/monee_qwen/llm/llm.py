@@ -495,15 +495,13 @@ class QwenAPILargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
                         usage=usage,
                     )
                     break
-                if chunk_json:
-                    if u := chunk_json.get("usage"):
-                        usage = u
-
 
                 if not chunk_json:
                     if len(chunk_json["choices"]) == 0:
                         continue
                 else:
+                    if u := chunk_json.get("usage"):
+                        usage = u
                     try:
                         choice_temp = chunk_json["choices"][0]
                     except Exception as ex:
